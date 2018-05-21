@@ -55,9 +55,6 @@
              socket.on('chat message', function(msg){
                  add_msg(msg);
              });
-             socket.on('user connected', function(){
-                 add_msg('user connected');
-             });
              socket.on('user disconnected', function(){
                  add_msg('user disconnected');
              });

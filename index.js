@@ -12,9 +12,9 @@ io.on('connection', function(socket){
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
     });
-    socket.on('user connected', function(){
-        io.emit('user connected');
-    });
+    //socket.on('user connected', function(){
+    //    io.emit('user connected');
+    //});
     socket.on('disconnected', function(){
          io.emit('user disconnected');
     });
