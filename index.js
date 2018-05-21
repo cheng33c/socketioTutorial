@@ -12,8 +12,8 @@ io.on('connection', function(socket){
     socket.on('chat message', function(msg){
         io.emit('chat message', msg);
     });
-    socket.on('disconnected', function(){
-         io.emit('user disconnected');
+    socket.on('disconnect', function(){
+        io.emit('disconnect');
     });
     socket.on('join', function(name){
         usocket[name] = socket;

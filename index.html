@@ -49,14 +49,14 @@
              });
 
              // show messages
-             socket.on('join', function(username){
-                 add_msg(username + '加入了聊天室');
+             socket.on('join', function(name){
+                 add_msg(name + '加入了聊天室');
              });
              socket.on('chat message', function(msg){
                  add_msg(msg);
              });
-             socket.on('user disconnected', function(){
-                 add_msg('user disconnected');
+             socket.on('disconnect', function(){
+                 add_msg('用户离开了聊天室');
              });
          });
         </script>
