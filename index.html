@@ -11,37 +11,55 @@
          #messages { list-style-type: none; margin: 0; padding: 0; }
          #messages li { padding: 5px 10px; }
          #messages li:nth-child(odd) { background: #eee; }
+         #users { background: #fff; }
         </style>
     </head>
     <body>
         <ul id="messages"></ul>
         <form action="">
             <input id="m" autocomplete="off">
-            <button onclick="javascript:send_msg()">Send</button>
+            <button onclick="javascript:show_msg_directly()">Send</button>
         </form>
         <script src="/socket.io/socket.io.js"></script>
         <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
         <script>
          $(function(){
+             var name = prompt("请输入你的名字:");
              var socket = io();
-             function send_msg(){
+
+             socket.emit("join", name);
+
+             function show_msg_directly(){
+                 // 当前发送消息的用户直接显示消息在消息列表中
                  msg = $('#m').val('');
+                 add_msg(msg);
+             }
+             function add_msg(msg){
                  $('#messages').append($('<li>').text(msg));
              }
+
              socket.emit('user connected', $('#messages').val());
+
              $('form').submit(function(){
+                 // 用户点击Send按钮时获取用户输入信息并发送给服务器
+                 // 然后将消息框清空，阻止form提交
                  socket.emit('chat message', $('#m').val());
                  $('#m').val('');
                  return false;
              });
+
+             // show messages
+             socket.on('join', function(username){
+                 add_msg(username + '加入了聊天室');
+             });
              socket.on('chat message', function(msg){
-                 $('#messages').append($('<li>').text(msg));
+                 add_msg(msg);
              });
              socket.on('user connected', function(){
-                 $('#messages').append($('<li>').text('user connected'));
+                 add_msg('user connected');
              });
              socket.on('user disconnected', function(){
-                 $('#messages').append($('<li>').text('user disconnected'));
+                 add_msg('user disconnected');
              });
          });
         </script>

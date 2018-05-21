@@ -1,6 +1,8 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var usocket = [];
+
 
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
@@ -13,8 +15,12 @@ io.on('connection', function(socket){
     socket.on('user connected', function(){
         io.emit('user connected');
     });
-    socket.on('user disconnected', function(){
+    socket.on('disconnected', function(){
          io.emit('user disconnected');
+    });
+    socket.on('join', function(name){
+        usocket[name] = socket;
+        io.emit('join', name);
     });
 });
 
